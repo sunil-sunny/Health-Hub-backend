@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 const { JWT_SECRET } = require("../config/keys");
+const emailSender = require('../config/emailSender');
 
 module.exports = (passport, jwt) => {
     exports.registerUser = (req, res) => {
@@ -15,12 +16,7 @@ module.exports = (passport, jwt) => {
                         error: 'Email is already in use'
                     })
                 } else {
-                    const newUser = new User({
-                        type,
-                        name,
-                        email,
-                        password
-                    });
+                    const newUser = new User({ type, name, email, password });
                     bcrypt.genSalt((err, salt) => {
                         if (err) throw err;
                         bcrypt.hash(password, salt, (err, hash) => {
@@ -93,6 +89,66 @@ module.exports = (passport, jwt) => {
                 res.status(200).json({
                     success: true
                 })
+            }
+        })
+    }
+
+    exports.sendVerificationToken = (req, res, next) => {
+        const { type, email } = req.body;
+        jwt.sign({ type, email }, JWT_SECRET, { expiresIn: '300s' }, (err, token) => {
+            if (err) {
+                res.status(200).json({
+                    success: false,
+                    message: 'Token generation failed ' + err
+                });
+            };
+            message = "Your password reset token is " + token;
+            emailSender(email, 'HealthHub - Reset Password', message)
+                .then(() => {
+                    res.status(200).json({
+                        success: true,
+                        token
+                    });
+                })
+                .catch(err => {
+                    res.status(200).json({
+                        success: false,
+                        message: 'Email Sending failed ' + err
+                    });
+                })
+
+        });
+    }
+
+    exports.updatePassword = (req, res, next) => {
+        const { token, type, email, newPassword } = req.body;
+        jwt.verify(token, JWT_SECRET, (err, authData) => {
+            if (err) res.status(403).json({
+                success: false,
+                message: err
+            });
+            else {
+                console.log(authData);
+                bcrypt.genSalt((err, salt) => {
+                    if (err) throw err;
+                    bcrypt.hash(newPassword, salt, (err, hash) => {
+                        if (err) throw err;
+                        User.findOneAndUpdate({ type, email }, { password: hash },
+                            { new: true }, (err, user) => {
+                                if (err) {
+                                    res.status(400).json({
+                                        success: false,
+                                        message: err
+                                    });
+                                }
+                                res.status(200).json({
+                                    success: true,
+                                    user: { ...user._doc, password: undefined }
+                                });
+                            })
+                    });
+                })
+
             }
         })
     }
