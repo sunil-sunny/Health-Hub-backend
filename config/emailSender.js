@@ -1,13 +1,13 @@
 const { SENDER_EMAIL } = require("../config/keys");
-const { EMAIL_PASSWORD }= require("../config/keys");
+const { EMAIL_PASSWORD } = require("../config/keys");
 var nodemailer = require('nodemailer');
-const emailSender= async (receiverEmail, subjectText, message)=> {
-    
+const emailSender = (receiverEmail, subjectText, message) => {
+
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: SENDER_EMAIL,
-            pass: EMAIL_PASSWORD 
+            pass: EMAIL_PASSWORD
         }
     });
 
@@ -18,15 +18,16 @@ const emailSender= async (receiverEmail, subjectText, message)=> {
         text: message
     };
 
-    transporter.sendMail(mailOptions, (err) => {
-
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('email sent');
-        }
-    });
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err) => {
+            if (err) {
+                reject(err);;
+            } else {
+                resolve("Message sent if the mail is valid")
+            }
+        });
+    })
 }
 
-module.exports=emailSender
+module.exports = emailSender
 
