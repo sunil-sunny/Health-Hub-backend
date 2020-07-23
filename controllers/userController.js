@@ -7,7 +7,7 @@ module.exports = (passport, jwt) => {
     exports.registerUser = (req, res) => {
         const { type, name, email, password } = req.body;
 
-        User.findOne({ email: email })
+        User.findOne({ type, email })
             .then(user => {
                 if (user) {
                     return res.status(200).json({
@@ -38,7 +38,24 @@ module.exports = (passport, jwt) => {
                     })
                 }
             });
+    }
 
+    exports.registerDoctor = (req, res, next) => {
+        const { type, email, image, location, specialization, description, fee } = req.body;
+        User.findOneAndUpdate({ type, email }, {
+            image, location, specialization, description, fee
+        }, { new: true }, (err, user) => {
+            if (err) {
+                res.status(400).json({
+                    success: false,
+                    message: err
+                });
+            }
+            res.status(200).json({
+                success: true,
+                user: { ...user._doc, password: undefined }
+            });
+        })
     }
 
     exports.loginUser = (req, res, next) => {
