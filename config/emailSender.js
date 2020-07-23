@@ -1,7 +1,7 @@
 const { SENDER_EMAIL } = require("../config/keys");
 const { EMAIL_PASSWORD }= require("../config/keys");
 var nodemailer = require('nodemailer');
-const emailSender= async (receiverEmail, subjectText, message)=> {
+const emailSender= async (receiverEmail, subjectText, message,callback)=> {
     
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -21,9 +21,9 @@ const emailSender= async (receiverEmail, subjectText, message)=> {
     transporter.sendMail(mailOptions, (err) => {
 
         if (err) {
-            console.log(err);
+            callback('Error in sending email',false)
         } else {
-            console.log('email sent');
+            callback('email sent',true)
         }
     });
 }
