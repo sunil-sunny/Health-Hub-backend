@@ -95,37 +95,49 @@ module.exports = (passport, jwt) => {
 
     exports.sendVerificationToken = (req, res, next) => {
         const { type, email } = req.body;
-        jwt.sign({ type, email }, JWT_SECRET, { expiresIn: '300s' }, (err, token) => {
-            if (err) {
+        User.find({ type, email }).then((models) => {
+            if (models.length === 0) {
                 res.status(200).json({
                     success: false,
-                    message: 'Token generation failed ' + err
+                    message: 'User with the provided email does not exist'
                 });
-            };
-            message = "Your password reset token is " + token;
-            emailSender(email, 'HealthHub - Reset Password', message)
-                .then(() => {
-                    res.status(200).json({
-                        success: true,
-                        token
-                    });
-                })
-                .catch(err => {
-                    res.status(200).json({
-                        success: false,
-                        message: 'Email Sending failed ' + err
-                    });
-                })
+            } else {
+                jwt.sign({ type, email }, JWT_SECRET, { expiresIn: '300s' }, (err, token) => {
+                    if (err) {
+                        res.status(200).json({
+                            success: false,
+                            message: 'Token generation failed',
+                            error: err
+                        });
+                    };
+                    message = "Your password reset token is " + token;
+                    emailSender(email, 'HealthHub - Reset Password', message)
+                        .then(() => {
+                            res.status(200).json({
+                                success: true,
+                                token
+                            });
+                        })
+                        .catch(err => {
+                            res.status(200).json({
+                                success: false,
+                                message: 'Email Sending failed',
+                                error: err
+                            });
+                        })
 
-        });
+                });
+            }
+        }).catch(err => { throw err })
+
     }
 
     exports.updatePassword = (req, res, next) => {
         const { token, type, email, newPassword } = req.body;
         jwt.verify(token, JWT_SECRET, (err, authData) => {
-            if (err) res.status(403).json({
+            if (err) res.status(200).json({
                 success: false,
-                message: err
+                message: 'Invalid Token'
             });
             else {
                 console.log(authData);
