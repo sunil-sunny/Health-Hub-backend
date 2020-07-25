@@ -1,8 +1,10 @@
 const Question = require('../models/question');
+const { JWT_SECRET } = require('../config/keys');
 
 //API to get ALL Questions
 exports.getAllQuestions = async (req, res, next) => {
-        console.log("into res")
+        console.log("into res");
+        console.log()
         try{
             const question = await Question.find();
             res.json(question);
@@ -13,7 +15,6 @@ exports.getAllQuestions = async (req, res, next) => {
 
 //API to post Question
 exports.postQuestion = async (req,res,next) => {
-    console.log(req.body);
     const ques = new Question(req.body);
     try{
     const savedQuestion = await ques.save();
