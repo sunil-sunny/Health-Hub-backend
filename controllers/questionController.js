@@ -1,3 +1,4 @@
+//author: Vidip Malhotra
 const Question = require('../models/question');
 const { JWT_SECRET } = require('../config/keys');
 
