@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/users", require("./routes/users.js")(passport, jwt));
-app.use("/questions",questionRoute);
+app.use("/questions",questionRoute(jwt));
 app.use("/answers",answerRoute);
 
 // Start the app by listening on the default Heroku port
