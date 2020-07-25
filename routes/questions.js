@@ -1,9 +1,6 @@
+//author: Vidip Malhotra
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
-const { verifyToken } = require('../config/auth');
-const { JWT_SECRET } = require("../config/keys");
 const QuestionsController = require('../controllers/questionController');
 
 router.get('/', QuestionsController.getAllQuestions);
