@@ -6,8 +6,10 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const morgan = require('morgan');
 const cors = require('cors');
-const suggestDoctorRoute=require('./routes/suggestDoctorRoute')
+const suggestDoctorRoute = require('./routes/suggestDoctorRoute')
 
+const questionRoute = require('./routes/questions');
+const answerRoute = require('./routes/answers');
 
 require('./config/passport')(passport);
 
@@ -30,6 +32,13 @@ app.use(passport.session());
 app.use("/users", require("./routes/users.js")(passport, jwt));
 app.use(suggestDoctorRoute)
 
+app.use("/questions", questionRoute);
+app.use("/answers", answerRoute);
+
+app.use("/orderMedicine", require("./routes/orderMedicines.js"));
+app.use("/homeCare", require("./routes/homeCare.js"));
+const feedbackRoute = require("./routes/feedback.js");
+app.use("/", feedbackRoute);
 
 // Start the app by listening on the default Heroku port
 const PORT = process.env.PORT || 8080
