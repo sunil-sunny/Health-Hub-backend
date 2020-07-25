@@ -16,6 +16,10 @@ const answerSchema = mongoose.Schema({
     question_id:{
         type:String,
         required:true
+    },
+    user_id:{
+        type:String,
+        required:true
     }
 });
 
