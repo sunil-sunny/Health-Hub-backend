@@ -5,7 +5,7 @@ const User = require('../models/User')
 require('body-parser')
 var HashSet = require("hashset");
 
-router.get("/suggestDoctor", async (req, res) => {
+router.post("/suggestDoctor", async(req, res) => {
     const symptoms = req.body.symptoms
     var docterTpye = new HashSet();
     try {
@@ -21,7 +21,7 @@ router.get("/suggestDoctor", async (req, res) => {
     }
 })
 
-router.get("/getSymptomsList", async (req, res) => {
+router.get("/getSymptomsList", async(req, res) => {
     try {
         var symptomList = new HashSet();
         const results = await suggestDoctorModel.find().select('symptoms')
