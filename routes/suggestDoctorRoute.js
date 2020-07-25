@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 const suggestDoctorModel = require('../models/suggestDoctor')
 const User = require('../models/User')
+const escapeStringRegexp = require('escape-string-regexp');
 require('body-parser')
 var HashSet = require("hashset");
 
 router.post("/suggestDoctor", async(req, res) => {
     const symptoms = req.body.symptoms
+    const location = req.body.location
+    const $regex = escapeStringRegexp(location);
     var docterTpye = new HashSet();
     try {
         const types = await suggestDoctorModel.find({ symptoms: { $in: symptoms } }).exec();
@@ -14,7 +17,13 @@ router.post("/suggestDoctor", async(req, res) => {
             docterTpye.add(specialist.type)
         });
         const specializations = docterTpye.toArray()
-        const doctors = await User.find({ specialization: specializations, location: req.body.location, fee: { $lt: req.body.price } })
+        const doctors = await User.find({
+            specialization: specializations,
+            location: {
+                $regex
+            },
+            fee: { $lt: req.body.price }
+        })
         res.status(200).send(doctors)
     } catch (err) {
         res.status(500).json({ "Error": "Unable to process" })
