@@ -1,3 +1,5 @@
+/* @author Sai Sunil Menta <ss734478@dal.ca> */
+
 const mongoose = require('mongoose');
 
 const suggestDoctorSchema = new mongoose.Schema({
@@ -8,10 +10,10 @@ const suggestDoctorSchema = new mongoose.Schema({
     symptoms: {
         type: [String],
         required: true,
-        default : []
+        default: []
     }
 })
 
-const suggestDoctorModel = mongoose.model('symptom', suggestDoctorSchema,'symptoms')
+const suggestDoctorModel = mongoose.model('symptom', suggestDoctorSchema, 'symptoms')
 
 module.exports = suggestDoctorModel;

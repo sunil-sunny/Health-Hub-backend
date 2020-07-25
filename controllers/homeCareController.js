@@ -1,4 +1,4 @@
-// author: Harshit Trivedi
+/* @author Harshit Trivedi <harshit.trivedi@dal.ca> */
 
 const homeCare = require('../models/HomeCare');
 

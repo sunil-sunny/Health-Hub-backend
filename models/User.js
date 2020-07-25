@@ -1,3 +1,5 @@
+/* @author Avinash Gazula <agazula@dal.ca> */
+
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({

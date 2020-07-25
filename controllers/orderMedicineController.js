@@ -1,4 +1,4 @@
-// author: Harshit Trivedi
+/* @author Harshit Trivedi <harshit.trivedi@dal.ca> */
 
 const orderMedicine = require('../models/OrderMedicine');
 

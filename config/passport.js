@@ -1,3 +1,5 @@
+/* @author Avinash Gazula <agazula@dal.ca> */
+
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 

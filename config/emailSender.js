@@ -1,3 +1,5 @@
+/* @author Sai Sunil Menta <ss734478@dal.ca> */
+
 const { SENDER_EMAIL } = require("../config/keys");
 const { EMAIL_PASSWORD } = require("../config/keys");
 var nodemailer = require('nodemailer');

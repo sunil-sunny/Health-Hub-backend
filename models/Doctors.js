@@ -1,3 +1,5 @@
+/* @author Rudra Makwana <rd851601@dal.ca> */
+
 const mongoose = require('mongoose');
 
 const DoctorSchema = new mongoose.Schema({

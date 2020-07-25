@@ -1,3 +1,5 @@
+/* @author Avinash Gazula <agazula@dal.ca> */
+
 const express = require("express");
 const bcrypt = require('bcryptjs');
 

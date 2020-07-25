@@ -1,3 +1,5 @@
+/* @author Swarali Ghalwadkar <swarali.ghalwadkar@dal.ca> */
+
 const express = require("express");
 const bcrypt = require('bcryptjs');
 

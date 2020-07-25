@@ -1,3 +1,5 @@
+/* @author Sai Sunil Menta <ss734478@dal.ca> */
+
 const express = require("express");
 const router = express.Router();
 const suggestDoctorModel = require('../models/suggestDoctor')
@@ -6,7 +8,7 @@ const escapeStringRegexp = require('escape-string-regexp');
 require('body-parser')
 var HashSet = require("hashset");
 
-router.post("/suggestDoctor", async(req, res) => {
+router.post("/suggestDoctor", async (req, res) => {
     const symptoms = req.body.symptoms
     const location = req.body.location
     const $regex = escapeStringRegexp(location);
@@ -30,7 +32,7 @@ router.post("/suggestDoctor", async(req, res) => {
     }
 })
 
-router.get("/getSymptomsList", async(req, res) => {
+router.get("/getSymptomsList", async (req, res) => {
     try {
         var symptomList = new HashSet();
         const results = await suggestDoctorModel.find().select('symptoms')
