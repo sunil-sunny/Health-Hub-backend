@@ -20,15 +20,6 @@ const emailSender = (receiverEmail, subjectText, message) => {
         text: message
     };
 
-
-    transporter.sendMail(mailOptions, (err) => {
-
-        if (err) {
-            callback('Error in sending email', false)
-        } else {
-            callback('email sent', true)
-        }
-    });
     return new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, (err) => {
             if (err) {
@@ -40,4 +31,4 @@ const emailSender = (receiverEmail, subjectText, message) => {
     })
 }
 
-module.exports = emailSender;
+module.exports = emailSender
