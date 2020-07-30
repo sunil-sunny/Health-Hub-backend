@@ -3,7 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const Notification = require('../models/NotificationModel')
-
+const sendNotification = require('../routes/sendNotification')
 
 router.get('/readNotification/:id', async(req, res) => {
 
@@ -18,30 +18,15 @@ router.get('/readNotification/:id', async(req, res) => {
 })
 
 router.get('/getNotifications', async(req, res) => {
-
     try {
-
         const notofications = await Notification.find({ isSeen: false })
         res.status(200).send(notofications)
 
     } catch (err) {
+        console.log(err)
         res.status(500).json({ "Error": "Unable to process" })
-
     }
 })
 
-const sendNotification = async(userId, message) => {
 
-    const notification = new Notification({ userId: userId, message: message })
-
-    notification.save((err) => {
-
-        if (err) {
-            console.log('Error')
-        } else {
-            console.log('saved')
-        }
-    })
-}
-
-module.exports = router, sendNotification
+module.exports = router
