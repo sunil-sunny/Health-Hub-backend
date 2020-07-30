@@ -6,14 +6,19 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const morgan = require('morgan');
 const cors = require('cors');
+const suggestDoctorRoute = require('./routes/suggestDoctorRoute')
+const notificationRoute = require('./routes/notoficationRoute')
+
+const questionRoute = require('./routes/questions');
+const answerRoute = require('./routes/answers');
 
 require('./config/passport')(passport);
 
 const DB_URI = require('./config/keys').MONGO_URI;
 mongoose.connect(DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
     .then(() => console.log("Connected to MongoDB"))
     .catch(err => console.error(err))
 
@@ -26,6 +31,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/users", require("./routes/users.js")(passport, jwt));
+app.use("/search", require("./routes/search-doctors.js")());
+app.use(suggestDoctorRoute)
+app.use(notificationRoute)
+
+app.use("/questions", questionRoute);
+app.use("/answers", answerRoute);
+
+app.use("/orderMedicine", require("./routes/orderMedicines.js"));
+app.use("/homeCare", require("./routes/homeCare.js"));
+const feedbackRoute = require("./routes/feedback.js");
+app.use("/", feedbackRoute);
 
 // Start the app by listening on the default Heroku port
 const PORT = process.env.PORT || 8080

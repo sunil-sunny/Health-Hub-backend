@@ -1,3 +1,5 @@
+/* @author Avinash Gazula <agazula@dal.ca> */
+
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 
@@ -6,9 +8,10 @@ const User = require('../models/User');
 
 module.exports = (passport) => {
     passport.use(
-        new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+        new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
             //Check if User exists
-            User.findOne({ email: email })
+            let type = req.body.type;
+            User.findOne({ type, email })
                 .then(user => {
                     if (!user) {
                         return done(null, false, { message: 'Email is not registered' })
