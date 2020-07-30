@@ -1,3 +1,4 @@
+/* @author Sai Sunil Menta <ss734478@dal.ca> */
 const Notification = require('../models/NotificationModel')
 
 module.exports = async(userId, message, callback) => {
