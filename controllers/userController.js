@@ -42,7 +42,11 @@ module.exports = (passport, jwt) => {
     exports.registerDoctor = (req, res, next) => {
         const { type, email, image, location, specialization, description, fee } = req.body;
         User.findOneAndUpdate({ type, email }, {
-            image, location, specialization, description, fee
+            image,
+            location,
+            specialization,
+            description,
+            fee
         }, { new: true }, (err, user) => {
             if (err) {
                 res.status(400).json({
@@ -52,7 +56,7 @@ module.exports = (passport, jwt) => {
             }
             res.status(200).json({
                 success: true,
-                user: { ...user._doc, password: undefined }
+                user: {...user._doc, password: undefined }
             });
         })
     }
@@ -67,7 +71,7 @@ module.exports = (passport, jwt) => {
                         if (err) throw err;
                         res.status(200).json({
                             success: true,
-                            user: { ...user._doc, password: undefined },
+                            user: {...user._doc, password: undefined },
                             token
                         });
                     })
@@ -148,28 +152,23 @@ module.exports = (passport, jwt) => {
                     if (err) throw err;
                     bcrypt.hash(newPassword, salt, (err, hash) => {
                         if (err) throw err;
-                        User.findOneAndUpdate({ type, email }, { password: hash },
-                            { new: true }, (err, user) => {
-                                if (err) {
-                                    res.status(400).json({
-                                        success: false,
-                                        message: err
-                                    });
-                                }
-                                res.status(200).json({
-                                    success: true,
-                                    user: { ...user._doc, password: undefined }
+                        User.findOneAndUpdate({ type, email }, { password: hash }, { new: true }, (err, user) => {
+                            if (err) {
+                                res.status(400).json({
+                                    success: false,
+                                    message: err
                                 });
-                            })
+                            }
+                            res.status(200).json({
+                                success: true,
+                                user: {...user._doc, password: undefined }
+                            });
+                        })
                     });
                 })
 
             }
         })
     }
-
     return exports;
-
 }
-
-
