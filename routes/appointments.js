@@ -15,7 +15,7 @@ const {
 router.get('/reserved-slots', getReservedTimes);
 router.post('/request', requestAppointment);
 router.post('/acceptAppointment/:id', acceptAppointment);
-router.get('/getAppointments', getAllApointments);
+router.get('/getAppointments/:id', getAllApointments);
 router.post('/deleteAppointment/:id', deleteAppointment);
 
 module.exports = router;

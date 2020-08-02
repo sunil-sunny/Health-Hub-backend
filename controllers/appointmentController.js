@@ -100,11 +100,15 @@ exports.acceptAppointment = async(req, res) => {
 exports.getAllApointments = async(req, res) => {
 
     try {
+        const doctorId = req.params.id;
         var currentdate = new Date();
         const appointments = await Appointment.find({
             confirmed: false,
             date: {
                 $gte: currentdate
+            },
+            doctorId: {
+                doctorId
             }
         });
         res.status(200).send(appointments);
