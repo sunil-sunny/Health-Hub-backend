@@ -1,7 +1,9 @@
 /* @author Avinash Gazula <agazula@dal.ca> */
+/* @author Sai Sunil Menta <ss734478@dal.ca>*/
 
 const Appointment = require('../models/Appointment');
 const Notification = require('../models/NotificationModel');
+const User = require('../models/User');
 
 exports.getReservedTimes = (req, res) => {
     const { doctorId, date } = req.query;
@@ -65,4 +67,78 @@ exports.requestAppointment = (req, res) => {
                 error: err,
             });
         });
+};
+
+
+exports.acceptAppointment = async(req, res) => {
+
+    try {
+        const appointmentId = req.params.id;
+        await Appointment.findByIdAndUpdate(appointmentId, { confirmed: true });
+        const appointmentDetails = await Appointment.findById(appointmentId);
+        const userDetails = await User.findById(appointmentDetails.doctorId);
+        const notoficationMessage = `your Appointment with Dr.${userDetails.name} has been confirmed`;
+        const newNotification = new Notification({
+            userId: appointmentDetails.patientId,
+            message: notoficationMessage
+        });
+        await newNotification.save();
+        res.status(200).json({
+            "result": "true"
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            duplicate: false,
+            error: err
+        });
+    }
+
+};
+
+
+exports.getAllApointments = async(req, res) => {
+
+    try {
+        var currentdate = new Date();
+        const appointments = await Appointment.find({
+            confirmed: false,
+            date: {
+                $gte: currentdate
+            }
+        });
+        res.status(200).send(appointments);
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            duplicate: false,
+            error: err
+        });
+    }
+};
+
+exports.deleteAppointment = async(req, res) => {
+
+    try {
+        const appointmentId = req.params.id;
+        const appointmentDetails = await Appointment.findById(appointmentId);
+        await Appointment.deleteOne({ _id: appointmentId });
+        const userDetails = await User.findById(appointmentDetails.doctorId);
+        const notoficationMessage = `your Appointment with Dr.${userDetails.name} has been cancelled, Kindly schedule again`;
+        const newNotification = new Notification({
+            userId: appointmentDetails.patientId,
+            message: notoficationMessage
+        });
+        await newNotification.save();
+        res.status(200).json({
+            "result": "true"
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            duplicate: false,
+            error: err
+        });
+    }
+
 };
