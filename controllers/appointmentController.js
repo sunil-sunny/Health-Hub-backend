@@ -4,6 +4,7 @@
 const Appointment = require('../models/Appointment');
 const Notification = require('../models/NotificationModel');
 const User = require('../models/User');
+var HashSet = require("hashset");
 
 exports.getReservedTimes = (req, res) => {
     const { doctorId, date } = req.query;
@@ -77,7 +78,7 @@ exports.requestAppointment = (req, res) => {
 };
 
 
-exports.acceptAppointment = async(req, res) => {
+exports.acceptAppointment = async (req, res) => {
 
     try {
         const appointmentId = req.params.id;
@@ -91,12 +92,14 @@ exports.acceptAppointment = async(req, res) => {
         });
         await newNotification.save();
         res.status(200).json({
-            "result": "true"
+            "result": "true",
+            "status": 200
         })
     } catch (err) {
         res.status(500).json({
             success: false,
             duplicate: false,
+            "status": 500,
             error: err
         });
     }
@@ -104,19 +107,23 @@ exports.acceptAppointment = async(req, res) => {
 };
 
 
-exports.getAllApointments = async(req, res) => {
+exports.getAllApointments = async (req, res) => {
 
     try {
-        const doctorId = req.params.id;
+        const id = req.params.id;
         var currentdate = new Date();
         const appointments = await Appointment.find({
             confirmed: false,
             date: {
-                $gte: currentdate
+                $lte: currentdate
             },
-            doctorId: {
-                doctorId
-            }
+            doctorId: id
+        });
+        var a;
+        await appointments.forEach(async (data) => {
+            const userDetails = await User.findById(data.patientId);
+            data.patientId = userDetails.name;
+            console.log(data)
         });
         res.status(200).send(appointments);
     } catch (err) {
@@ -128,7 +135,7 @@ exports.getAllApointments = async(req, res) => {
     }
 };
 
-exports.deleteAppointment = async(req, res) => {
+exports.deleteAppointment = async (req, res) => {
 
     try {
         const appointmentId = req.params.id;
