@@ -7,14 +7,11 @@ module.exports = async(userId, message, callback) => {
 
         await notification.save((err) => {
             if (err) {
-                console.log('err ')
                 callback(err, false)
             } else {
-                console.log("noti sent")
                 callback('message sent', true)
             }
         })
-
     } catch (err) {
         callback(err, false)
     }

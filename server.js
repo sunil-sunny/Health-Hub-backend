@@ -8,7 +8,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const suggestDoctorRoute = require('./routes/suggestDoctorRoute');
 const notificationRoute = require('./routes/notificationRoute');
-
 const questionRoute = require('./routes/questions');
 const answerRoute = require('./routes/answers');
 
