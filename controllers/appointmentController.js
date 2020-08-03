@@ -29,10 +29,17 @@ exports.getReservedTimes = (req, res) => {
 exports.requestAppointment = (req, res) => {
     const { doctorId, patientId, patientName, date, time } = req.body;
 
-    const newAppointment = new Appointment({ doctorId, patientId, date, time });
+    const newAppointment = new Appointment({
+        doctorId,
+        patientId,
+        patientName,
+        date,
+        time,
+    });
     newAppointment
         .save()
-        .then(() => {
+        .then((data) => {
+            console.log(data);
             const newNotification = new Notification({
                 userId: doctorId,
                 message: `Appointment with ${patientName} on ${date} at ${time}`,
