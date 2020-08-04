@@ -10,6 +10,8 @@ const suggestDoctorRoute = require('./routes/suggestDoctorRoute');
 const notificationRoute = require('./routes/notificationRoute');
 const questionRoute = require('./routes/questions');
 const answerRoute = require('./routes/answers');
+const insuranceRoute = require('./routes/insurances');
+const userinsuranceRoute = require('./routes/userinsurance');
 
 require('./config/passport')(passport);
 
@@ -31,18 +33,21 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/users', require('./routes/users.js')(passport, jwt));
-app.use('/search', require('./routes/search-doctors.js')());
-app.use(suggestDoctorRoute);
+app.use("/users", require("./routes/users.js")(passport, jwt));
+app.use("/questions",questionRoute);
+app.use("/answers",answerRoute);
+app.use("/insurance",insuranceRoute);
+app.use("/userinsurance",userinsuranceRoute);
+app.use("/search", require("./routes/search-doctors.js")());
+app.use(suggestDoctorRoute)
 app.use(notificationRoute);
-
-app.use('/questions', questionRoute);
-app.use('/answers', answerRoute);
 
 app.use('/orderMedicine', require('./routes/orderMedicines.js'));
 app.use('/homeCare', require('./routes/homeCare.js'));
 const feedbackRoute = require('./routes/feedback.js');
 app.use('/', feedbackRoute);
+const writeblogRoute = require('./routes/writeblog.js');
+app.use('/', writeblogRoute);
 
 app.use('/appointment', require('./routes/appointments'));
 

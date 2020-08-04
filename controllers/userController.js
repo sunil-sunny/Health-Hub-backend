@@ -57,7 +57,7 @@ module.exports = (passport, jwt) => {
         User.findOneAndUpdate(
             { type, email },
             {
-                image,
+                image_url: image,
                 location,
                 specialization,
                 description,
@@ -148,21 +148,20 @@ module.exports = (passport, jwt) => {
         );
     };
 
-    exports.getUserById= async (req,res)=>{
-        const id=req.params.id;
-        console.log(id)
-        try{
-            const userDetail= await User.findById(id);
-            console.log(userDetail)
-            res.status(200).send(userDetail)
-        }catch(err){
+    exports.getUserById = async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+        try {
+            const userDetail = await User.findById(id);
+            console.log(userDetail);
+            res.status(200).send(userDetail);
+        } catch (err) {
             res.status(500).json({
                 success: false,
-                message: info.message
+                message: info.message,
             });
         }
-       
-    }
+    };
 
     exports.logoutUser = (req, res, next) => {
         jwt.verify(req.token, JWT_SECRET, (err, authData) => {

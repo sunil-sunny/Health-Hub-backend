@@ -20,17 +20,22 @@ module.exports = () => {
         else {
             MedicalDetails.findOne({userID: uID},function(err, result) {
                 if (err) throw err;
-                result.bloodPressure = decryption(result.bloodPressure);
-                result.Height = decryption(result.Height);
-                result.Weight = decryption(result.Weight);
-                result.heartRate = decryption(result.heartRate);
-                result.hemoglobin = decryption(result.hemoglobin);
-                result.hemoglobinA1c = decryption(result.hemoglobinA1c);
-                result.hematocrit = decryption(result.hematocrit);
-                result.rbc = decryption(result.rbc);
-                result.wbc = decryption(result.wbc);
-                result.plt = decryption(result.plt);
-                res.json(result);
+                if(result==null || result == undefined){
+                    res.json(result);
+                }
+                else{
+                    result.bloodPressure = decryption(result.bloodPressure);
+                    result.Height = decryption(result.Height);
+                    result.Weight = decryption(result.Weight);
+                    result.heartRate = decryption(result.heartRate);
+                    result.hemoglobin = decryption(result.hemoglobin);
+                    result.hemoglobinA1c = decryption(result.hemoglobinA1c);
+                    result.hematocrit = decryption(result.hematocrit);
+                    result.rbc = decryption(result.rbc);
+                    result.wbc = decryption(result.wbc);
+                    result.plt = decryption(result.plt);
+                    res.json(result);
+                }
             });
         }
     }
