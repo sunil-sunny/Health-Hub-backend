@@ -29,6 +29,14 @@ const insuranceSchema = mongoose.Schema({
     salary:{
         type:String,
         required:true
+    },
+    details:{
+        type:String,
+        required:true
+    },
+    dentalcare:{
+        type:String,
+        required:true
     }
 });
 
