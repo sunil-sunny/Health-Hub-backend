@@ -13,7 +13,7 @@ const { JWT_SECRET } = require("../config/keys");
 
 
 module.exports = (passport, jwt) => {
-    const { registerUser, registerDoctor, loginUser, logoutUser, sendVerificationToken, updatePassword } = require('../controllers/userController')(passport, jwt);
+    const { registerUser, registerDoctor, loginUser,verifyUser, logoutUser, sendVerificationToken, updatePassword } = require('../controllers/userController')(passport, jwt);
 
     router.post("/register", registerUser);
 
@@ -27,6 +27,7 @@ module.exports = (passport, jwt) => {
 
     router.post('/update-password', updatePassword)
 
+    router.get('/verify', verifyUser);
+
     return router;
 }
-

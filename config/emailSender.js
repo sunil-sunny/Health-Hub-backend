@@ -32,4 +32,3 @@ const emailSender = (receiverEmail, subjectText, message) => {
 }
 
 module.exports = emailSender
-
