@@ -43,6 +43,8 @@ app.use('/orderMedicine', require('./routes/orderMedicines.js'));
 app.use('/homeCare', require('./routes/homeCare.js'));
 const feedbackRoute = require('./routes/feedback.js');
 app.use('/', feedbackRoute);
+const writeblogRoute = require('./routes/writeblog.js');
+app.use('/', writeblogRoute);
 
 app.use('/appointment', require('./routes/appointments'));
 
