@@ -119,12 +119,6 @@ exports.getAllApointments = async (req, res) => {
             },
             doctorId: id
         });
-        var a;
-        await appointments.forEach(async (data) => {
-            const userDetails = await User.findById(data.patientId);
-            data.patientId = userDetails.name;
-            console.log(data)
-        });
         res.status(200).send(appointments);
     } catch (err) {
         res.status(500).json({
