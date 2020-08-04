@@ -29,4 +29,3 @@ module.exports = (passport, jwt) => {
 
     return router;
 }
-
