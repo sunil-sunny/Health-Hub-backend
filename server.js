@@ -48,6 +48,8 @@ app.use('/', writeblogRoute);
 
 app.use('/appointment', require('./routes/appointments'));
 
+app.use("/medical", require('./routes/medical-details.js')());
+
 // Start the app by listening on the default Heroku port
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
