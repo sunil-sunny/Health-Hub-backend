@@ -8,43 +8,43 @@ const MedicalDetailScema = new mongoose.Schema({
         required: false
     },
     Height: {
-        type: Number,
+        type: String,
         required: false
     },
     Weight: {
-        type: Number,
+        type: String,
         required: false
     },
     bloodPressure: {
-        type: Number,
+        type: String,
         required: false
     },
     heartRate: {
-        type: Number,
+        type: String,
         required: false
     },
     hemoglobin: {
-        type: Number,
+        type: String,
         required: false
     },
     hemoglobinA1c: {
-        type: Number,
+        type: String,
         required: false
     },
     hematocrit: {
-        type: Number,
+        type: String,
         required: false
     },
     rbc: {
-        type: Number,
+        type: String,
         required: false
     },
     wbc: {
-        type: Number,
+        type: String,
         required: false
     },
     plt: {
-        type: Number,
+        type: String,
         required: false
     }
 });
