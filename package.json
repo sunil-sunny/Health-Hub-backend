@@ -1,5 +1,4 @@
 {
-
   "name": "healthhub",
   "version": "0.0.0",
   "scripts": {
@@ -33,4 +32,3 @@
     "npm": "6.13.4"
   }
 }
-
